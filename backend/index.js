@@ -67,7 +67,7 @@ app.get('/api/metrics', (req, res) => {
 app.listen(PORT, () => {
   console.log(`🚀 Backend API running at http://localhost:${PORT}`);
 
-  const reactBuildPath = path.join(__dirname, '../dashboard/build');
+  const reactBuildPath = path.join(__dirname, './build');
   app.use(express.static(reactBuildPath));
 
 app.get('/*', (req, res) => {
