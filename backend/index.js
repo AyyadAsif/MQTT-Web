@@ -67,20 +67,11 @@ app.get('/api/metrics', (req, res) => {
 app.listen(PORT, () => {
   console.log(`🚀 Backend API running at http://localhost:${PORT}`);
 
-const reactBuildPath = path.join(__dirname, '../dashboard/build');
-app.use(express.static(reactBuildPath));
+  const reactBuildPath = path.join(__dirname, '../dashboard/build');
+  app.use(express.static(reactBuildPath));
 
-// Send index.html for any unknown routes (for React Router support)
-app.get('*', (req, res) => {
-  res.sendFile(path.join(reactBuildPath, 'index.html'));
-});
-
-
-  reactProcess.stdout.on('data', (data) => {
-    console.log(`[React]: ${data}`);
-  });
-
-  reactProcess.stderr.on('data', (data) => {
-    console.error(`[React ERROR]: ${data}`);
+  app.get('*', (req, res) => {
+    res.sendFile(path.join(reactBuildPath, 'index.html'));
   });
 });
+
