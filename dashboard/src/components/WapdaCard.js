@@ -8,7 +8,7 @@ export const WapdaCard = (onStatusChange) => {
   useEffect(() => {
     const fetchLoad = async () => {
   try {
-    const res = await fetch('http://192.168.2.79:3001/api/metrics');
+    const res = await fetch('/api/metrics');    
     const data = await res.json();
 
     if (typeof data.wapdaLoad === 'number') {
