@@ -1,0 +1,548 @@
+
+*{
+   font-family: 'Inter', sans-serif;
+}
+
+#generator-load-gauge text {
+  font-family: 'Inter', sans-serif !important;
+  font-weight: 700 !important;
+  font-style: italic !important;
+}
+
+
+.app-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 40px;
+  gap: 20px;
+  min-height: 100vh;
+  background-color: #f5f5f5;
+}
+
+.top-row, .bottom-row {
+  display: flex;
+  justify-content: space-around;
+  width: 100%;
+  max-width: 1200px;
+}
+
+.card-wrapper {
+  flex: 1;
+  margin: 0 20px;
+  display: flex;
+  justify-content: center;
+}
+
+.svg-wires {
+  width: 100%;
+  max-width: 1200px;
+  position: relative;
+  height: 200px;
+}
+
+.wire {
+  fill: none;
+  stroke: #3498db;
+  stroke-width: 3;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-dasharray: 240;
+  stroke-dashoffset: 240;
+  animation: draw 2s ease-in-out forwards;
+  animation-delay: 0.5s;
+}
+
+@keyframes draw {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+.wire.disconnected {
+  stroke: #b71c1c; /* dark red */
+  stroke-dasharray: 4;
+  animation: none;
+}
+
+
+
+
+/* General card styling with gradient background */
+.Card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+
+  width: 220px;
+  padding: 20px;
+
+  background: linear-gradient(135deg, #f39c12 10%, #f5f5f5 90%);
+  border-radius: 16px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+
+  animation: flipInFront 0.6s ease forwards;
+  transform-style: preserve-3d;
+}
+
+.Card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.15);
+}
+
+/* Image styles */
+.GenIcon,
+.SolarIcon,
+.WapdaIcon,
+.TotalIcon,
+.AvgIcon {
+  width: 100px;
+  height: 100px;
+  object-fit: contain;
+  margin-bottom: 12px;
+}
+
+/* Specific icon tweaks */
+.SolarIcon {
+  filter: hue-rotate(25deg) brightness(1.1);
+}
+
+.WapdaIcon {
+  filter: grayscale(10%) brightness(1.05);
+}
+
+/* Load value */
+.Load {
+  font-size: 20px;
+  font-weight: 700;
+  font-style: italic;
+  color: #333;
+  text-align: center;
+}
+
+/* Decorative bar under text */
+.Load::after {
+  content: '';
+  display: block;
+  height: 2px;
+  width: 40px;
+  background: linear-gradient(90deg, #f39c12, #bdc3c7);
+  margin: 8px auto 0;
+  opacity: 0.5;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  .card-wrapper {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .Card {
+    width: 90%;
+    position: relative;
+  }
+}
+
+.top-row,
+.bottom-row {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 40px;
+  z-index: 2;
+  position: relative;
+}
+
+.card-wrapper {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  position: relative;
+}
+
+/* SVG wire layer */
+
+
+/* Wire styles */
+.wire {
+  stroke: #f39c12;
+  stroke-width: 4;
+  stroke-linecap: round;
+  stroke-dasharray: 10;
+  animation: electric-flow 1.2s linear infinite;
+}
+
+@keyframes electric-flow {
+  0% {
+    stroke-dashoffset: 0;
+    stroke: #f39c12;
+  }
+  50% {
+    stroke: #f1c40f;
+  }
+  100% {
+    stroke-dashoffset: -20;
+    stroke: #f39c12;
+  }
+}
+
+.wire.disconnected {
+  stroke: #b71c1c; /* dark red */
+  stroke-dasharray: 4;
+  animation: none;
+}
+
+
+
+/* Card states */
+.Card.connected {
+  background: linear-gradient(135deg, #f39c12 10%, #f5f5f5 90%);
+}
+
+.Card.unavailable {
+  background: linear-gradient(135deg, #ffe6e6, #ffcccc);
+  border: 2px solid #e74c3c;
+  filter: grayscale(30%);
+}
+
+.Card.disconnected {
+  background: linear-gradient(135deg, #dddddd, #f5f5f5);
+  border: 2px dashed #aaa;
+  color: #888;
+  filter: grayscale(100%);
+}
+
+/* Icon adjustments */
+.Card.disconnected img,
+.Card.unavailable img {
+  opacity: 0.5;
+}
+
+/* Optional: flashing border for disconnected */
+.Card.unavailable {
+  animation: pulseDanger 1.5s infinite;
+}
+
+
+@keyframes pulseDanger {
+  0% {
+    box-shadow: 0 0 0px #e74c3c;
+  }
+  50% {
+    box-shadow: 0 0 12px #e74c3c;
+  }
+  100% {
+    box-shadow: 0 0 0px #e74c3c;
+  }
+}
+
+
+/* Unavailable card doesn’t animate */
+.Card.disconnected {
+  box-shadow: none;
+}
+
+/* Base card hover (only for connected state) */
+.Card.connected:hover {
+  transform: scale(1.05);
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.2);
+  cursor: pointer;
+}
+
+/* Load styling for hover effect */
+.Card.connected:hover .Load {
+  font-size: 28px;
+  color: #c47900;
+  text-shadow: 0 0 6px rgba(255, 165, 0, 0.6);
+  transition: all 0.3s ease-in-out;
+}
+
+.Card.connected:hover .Load::before {
+  content: '';
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: -4px;
+  left: 0;
+  z-index: -1;
+  background: radial-gradient(circle, rgba(255, 193, 7, 0.25) 0%, transparent 80%);
+  border-radius: 12px;
+}
+
+
+/* Smooth transition in normal state */
+.Load {
+  font-size: 20px;
+  font-weight: 600;
+  color: #333;
+  text-align: center;
+  transition: all 0.3s ease;
+}
+
+
+/* Card label for clarity */
+.CardLabel {
+  font-size: 14px;
+  font-weight: 700;
+  color: #555;
+  margin-bottom: 4px;
+}
+
+/* Footer styling */
+.Footer {
+  color: #000;
+  padding: 20px 0;
+  text-align: center;
+  position: relative;
+  width: 100%;
+  bottom: 0;
+  left: 0;
+  box-shadow: 0 -5px 15px rgba(0, 0, 0, 0.1);
+}
+
+/* Footer content layout */
+.FooterContent {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+
+/* Company logo */
+.FooterLogo {
+  width: 100px;
+  height: auto;
+  object-fit: contain;
+}
+
+/* Rights reserved text */
+.RightsText {
+  font-size: 14px;
+  font-weight: 400;
+  color: #000;
+  margin-top: 10px;
+}
+
+/* Responsiveness for small screens */
+@media (max-width: 768px) {
+  .FooterContent {
+    flex-direction: column;
+  }
+
+  .FooterLogo {
+    margin-bottom: 10px;
+  }
+}
+
+.flip-container {
+  perspective: 1000px;
+  cursor: pointer;
+}
+
+.flipper {
+  position: relative;
+  transition: transform 0.8s;
+  transform-style: preserve-3d;
+}
+
+.flipped .flipper {
+  transform: rotateY(180deg);
+}
+
+.front, .back {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  border-radius: 12px;
+  backface-visibility: hidden;
+}
+
+.front {
+  z-index: 2;
+  transform: rotateY(0deg);
+}
+
+.back {
+  transform: rotateY(180deg);
+  background: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+
+.FlipCard{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+
+  width: 220px;
+  padding: 20px;
+
+  background: linear-gradient(135deg, #f39c12 10%, #f5f5f5 90%);
+  border-radius: 16px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+
+  animation: flipInBack 0.6s ease forwards;
+  transform-style: preserve-3d;
+}
+
+.FlipCardContent {
+  transform: rotateY(180deg);
+  width: 100%;
+  height: 200px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+
+
+
+@keyframes flipInFront {
+  0% {
+    transform: rotateY(180deg);
+    opacity: 0;
+  }
+  100% {
+    transform: rotateY(0);
+    opacity: 1;
+  }
+}
+
+@keyframes flipInBack {
+  0% {
+    transform: rotateY(0);
+    opacity: 0;
+  }
+  100% {
+    transform: rotateY(180deg);
+    opacity: 1;
+  }
+}
+
+/* ===== Responsive Enhancements ===== */
+
+/* Tablets (≤1024px) */
+@media (max-width: 1024px) {
+  .app-container {
+    padding: 20px 10px;
+  }
+
+  .Card {
+    width: 180px;
+    padding: 16px;
+  }
+
+  .GenIcon,
+  .SolarIcon,
+  .WapdaIcon,
+  .TotalIcon,
+  .AvgIcon,
+  .logo-img
+   {
+    width: 80px;
+    height: 80px;
+    margin-bottom: 10px;
+  }
+
+  .Load {
+    font-size: 18px;
+  }
+
+  .CardLabel {
+    font-size: 13px;
+  }
+}
+
+
+/* Phones (≤768px) */
+@media (max-width: 768px) {
+  .card-wrapper {
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+  }
+
+  .Card {
+    width: 90%;
+    padding: 18px;
+  }
+
+  .Load {
+    font-size: 16px;
+  }
+
+  .CardLabel {
+    font-size: 12px;
+  }
+
+  .GenIcon,
+  .SolarIcon,
+  .WapdaIcon,
+  .TotalIcon,
+  .AvgIcon {
+    width: 70px;
+    height: 70px;
+  }
+
+  .svg-wires {
+    padding: 20px 10px;
+  }
+
+  .top-row,
+  .bottom-row {
+    flex-direction: column;
+    gap: 20px;
+  }
+
+
+  .FooterContent {
+    flex-direction: column;
+    gap: 10px;
+  }
+}
+
+
+/* Very small devices (≤480px) */
+@media (max-width: 480px) {
+  .Card {
+    width: 100%;
+    padding: 14px;
+  }
+
+  .Load {
+    font-size: 15px;
+  }
+
+  .CardLabel {
+    font-size: 11px;
+  }
+
+  .GenIcon,
+  .SolarIcon,
+  .WapdaIcon,
+  .TotalIcon,
+  .AvgIcon {
+    width: 60px;
+    height: 60px;
+  }
+
+  .FlipCard {
+    width: 100%;
+    padding: 14px;
+  }
+
+  .FlipCardContent {
+    height: 160px;
+  }
+
+  .Footer {
+    font-size: 12px;
+  }
+}
