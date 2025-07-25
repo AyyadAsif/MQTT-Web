@@ -70,8 +70,9 @@ app.listen(PORT, () => {
   const reactBuildPath = path.join(__dirname, '../dashboard/build');
   app.use(express.static(reactBuildPath));
 
-  app.get('*', (req, res) => {
-    res.sendFile(path.join(reactBuildPath, 'index.html'));
-  });
+app.get('/*', (req, res) => {
+  res.sendFile(path.join(reactBuildPath, 'index.html'));
+});
+
 });
 
